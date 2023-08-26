@@ -59,13 +59,18 @@ class _RecipesScreenState extends State<RecipesScreen> {
               Recipe recipe = RecipesProvider.instance.recipes[index];
               return SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap.verticalNewSection(),
-                    Text(recipe.name),
+                    Text(recipe.name, style: ThemeCustom.textTheme(context).titleLarge),
+                    const Gap.verticalNewSection(),
+                    Text("Ingredients:", style: ThemeCustom.textTheme(context).titleMedium),
                     const Gap.vertical(),
-                    ...recipe.ingredients.map((ingredient) => Text(ingredient)),
+                    ...recipe.ingredients.map((ingredient) => Text(ingredient.capitalizeFirstLetter() ?? "")),
+                    const Gap.verticalNewSection(),
+                    Text("Steps:", style: ThemeCustom.textTheme(context).titleMedium),
                     const Gap.vertical(),
-                    ...recipe.steps.map((step) => Text(step)),
+                    ...recipe.steps.map((step) => OutlinedCard(child: Text(step))),
                     const Gap.vertical(),
                     // const Placeholder(
                     //   fallbackHeight: 1000,
