@@ -51,6 +51,7 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients) const LinearProgressIndicator(),
             const Gap.verticalNewSection(),
             Row(
               children: [
@@ -68,19 +69,20 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
                     },
                   ),
                 ),
-                getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients
-                    ? const LoadingSpinnerIndicator(small: true)
-                    : IconButton(
-                        onPressed: () async {
-                          final ImagePickerPlatform imagePickerImplementation = ImagePickerPlatform.instance;
-                          if (imagePickerImplementation is ImagePickerAndroid) {
-                            imagePickerImplementation.useAndroidPhotoPicker = true;
-                          }
-                          XFile? image = await imagePickerImplementation.getImageFromSource(source: ImageSource.camera, options: const ImagePickerOptions(imageQuality: 1));
-                          if (image == null) return;
-                          ConfigurationProvider.instance.addIngredientsFromImage(image);
-                        },
-                        icon: const Icon(Icons.camera_alt_rounded)),
+                const Gap.horizontal(),
+                IconButton(
+                    onPressed: getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients
+                        ? null
+                        : () async {
+                            final ImagePickerPlatform imagePickerImplementation = ImagePickerPlatform.instance;
+                            if (imagePickerImplementation is ImagePickerAndroid) {
+                              imagePickerImplementation.useAndroidPhotoPicker = true;
+                            }
+                            XFile? image = await imagePickerImplementation.getImageFromSource(source: ImageSource.camera, options: const ImagePickerOptions(imageQuality: 1));
+                            if (image == null) return;
+                            ConfigurationProvider.instance.addIngredientsFromImage(image);
+                          },
+                    icon: const Icon(Icons.camera_alt_rounded)),
               ],
             ),
             const Gap.vertical(),

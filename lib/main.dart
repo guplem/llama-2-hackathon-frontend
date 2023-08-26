@@ -34,13 +34,13 @@ class _MyAppState extends State<MyApp> {
       providers: [
         // Provider(create: (context) => SomeOtherClass()),
         ChangeNotifierProvider(create: (context) => InternetConnectivityProvider()),
-        ChangeNotifierProvider(create: (context) => ConfigurationProvider(ingredients: ["Tomato", "Cheese"])),
+        ChangeNotifierProvider(create: (context) => ConfigurationProvider(ingredients: ["Oil", "Salt", "Pepper", "Onion", "Garlic"])),
         ChangeNotifierProvider(
           create: (context) => RecipesProvider(
             recipes: [
-              Recipe(id: "1", name: "Recipe A", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
-              Recipe(id: "2", name: "Recipe B", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
-              Recipe(id: "3", name: "Recipe C", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
+              // Recipe(id: "1", name: "Recipe A", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
+              // Recipe(id: "2", name: "Recipe B", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
+              // Recipe(id: "3", name: "Recipe C", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
             ],
           ),
         ),

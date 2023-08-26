@@ -67,9 +67,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
                     const Gap.vertical(),
                     ...recipe.steps.map((step) => Text(step)),
                     const Gap.vertical(),
-                    const Placeholder(
-                      fallbackHeight: 1000,
-                    )
+                    // const Placeholder(
+                    //   fallbackHeight: 1000,
+                    // )
                   ],
                 ),
               );
