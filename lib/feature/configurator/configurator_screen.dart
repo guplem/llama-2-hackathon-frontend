@@ -3,8 +3,10 @@ import "package:receptes_rostisseries_delgado/feature/configurator/configuration
 import "package:receptes_rostisseries_delgado/feature/recipe/recipes_provider.dart";
 import "package:receptes_rostisseries_delgado/feature/recipe/recipes_screen.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
-import 'package:image_picker_android/image_picker_android.dart';
-import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
+import "package:image_picker_android/image_picker_android.dart";
+
+// ignore: depend_on_referenced_packages
+import "package:image_picker_platform_interface/image_picker_platform_interface.dart";
 
 class ConfiguratorScreen extends StatefulWidget {
   const ConfiguratorScreen({super.key});
@@ -44,57 +46,61 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Gap.verticalNewSection(),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _ingredientTextController,
-                  autocorrect: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Add ingredient",
-                  ),
-                  onSubmitted: (String value) {
-                    ConfigurationProvider.instance.addIngredient(value);
-                    _ingredientTextController.clear();
-                  },
-                ),
-              ),
-              IconButton(
-                  onPressed: () async {
-                    final ImagePickerPlatform imagePickerImplementation = ImagePickerPlatform.instance;
-                    if (imagePickerImplementation is ImagePickerAndroid) {
-                      imagePickerImplementation.useAndroidPhotoPicker = true;
-                    }
-                    XFile? image = await imagePickerImplementation.getImageFromSource(source: ImageSource.camera, options: const ImagePickerOptions(imageQuality: 1));
-                    if (image == null) return;
-                    ConfigurationProvider.instance.addIngredientsFromImage(image);
-                  },
-                  icon: const Icon(Icons.camera_alt_rounded)),
-            ],
-          ),
-          const Gap.vertical(),
-          ...List.from(
-            getProvider<ConfigurationProvider>(context, listen: true).ingredients.map(
-                  (String ingredient) => ListTile(
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete_rounded),
-                      onPressed: () async {
-                        await Future.delayed(const Duration(milliseconds: 250));
-                        ConfigurationProvider.instance.removeIngredient(ingredient);
-                      },
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Gap.verticalNewSection(),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _ingredientTextController,
+                    autocorrect: true,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Add ingredient",
                     ),
-                    title: Text(ingredient),
+                    onSubmitted: (String value) {
+                      ConfigurationProvider.instance.addIngredient(value);
+                      _ingredientTextController.clear();
+                    },
                   ),
                 ),
-          ),
-          getProvider<RecipesProvider>(context, listen: true).recipes.isEmpty ? const Gap.vertical() : const Gap.verticalNewSection(),
-        ],
+                getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients
+                    ? const LoadingSpinnerIndicator(small: true)
+                    : IconButton(
+                        onPressed: () async {
+                          final ImagePickerPlatform imagePickerImplementation = ImagePickerPlatform.instance;
+                          if (imagePickerImplementation is ImagePickerAndroid) {
+                            imagePickerImplementation.useAndroidPhotoPicker = true;
+                          }
+                          XFile? image = await imagePickerImplementation.getImageFromSource(source: ImageSource.camera, options: const ImagePickerOptions(imageQuality: 1));
+                          if (image == null) return;
+                          ConfigurationProvider.instance.addIngredientsFromImage(image);
+                        },
+                        icon: const Icon(Icons.camera_alt_rounded)),
+              ],
+            ),
+            const Gap.vertical(),
+            ...List.from(
+              getProvider<ConfigurationProvider>(context, listen: true).ingredients.map(
+                    (String ingredient) => ListTile(
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete_rounded),
+                        onPressed: () async {
+                          await Future.delayed(const Duration(milliseconds: 250));
+                          ConfigurationProvider.instance.removeIngredient(ingredient);
+                        },
+                      ),
+                      title: Text(ingredient),
+                    ),
+                  ),
+            ),
+            getProvider<RecipesProvider>(context, listen: true).recipes.isEmpty ? const Gap.vertical() : const Gap.verticalNewSection(),
+          ],
+        ),
       ),
     );
   }

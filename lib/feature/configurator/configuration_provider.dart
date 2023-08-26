@@ -6,7 +6,7 @@ import "package:flutter/material.dart";
 import "package:image_picker/image_picker.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 
-import "../../api.dart";
+import "package:receptes_rostisseries_delgado/api.dart";
 
 // https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple
 // getProvider<X> vs. Consumer<X> https://stackoverflow.com/a/58774889/7927429
@@ -16,6 +16,8 @@ class ConfigurationProvider extends ChangeNotifier {
     _ingredients = ingredients ?? [];
     instance = this; // Singleton pattern
   }
+
+  bool loadingIngredients = false;
 
   /// Recommended to use this when notifications about updates are not required instead of using getProvider<LoggedUserProvider>(context, listen: false). Reason: avoid over use of context
   static late final ConfigurationProvider instance; // Singleton pattern
@@ -38,6 +40,9 @@ class ConfigurationProvider extends ChangeNotifier {
   void addIngredientsFromImage(XFile image) async {
     Debug.logSuccessUpload("Requesting ingredients from image...");
 
+    loadingIngredients = true;
+    notifyListeners();
+
     Uint8List bytes = await image.readAsBytes();
     String base64 = base64Encode(bytes);
 
@@ -54,14 +59,15 @@ class ConfigurationProvider extends ChangeNotifier {
       },
     );
 
-
     List<dynamic> concepts = response.data["results"][0]["outputs"][0]["data"]["concepts"];
-    concepts.removeWhere((concept) => concept["value"] < 0.6);
+    concepts.removeWhere((concept) => concept["value"] < 0.7);
     List<String> ingredients = concepts.map((concept) => concept["name"]).toList().cast<String>();
     ingredients.removeWhere((ingredient) => ingredient.isNullOrEmpty);
     ingredients = ingredients.map((ingredient) => ingredient.trim().capitalizeFirstLetter()!).toList();
+
     Debug.logSuccessDownload("Ingredients in text format:\n$ingredients");
 
+    loadingIngredients = false;
     _ingredients.addAll(ingredients);
     notifyListeners();
   }
