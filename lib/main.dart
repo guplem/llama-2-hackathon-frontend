@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configurator_screen.dart";
-import "package:receptes_rostisseries_delgado/feature/recipe/recipe_provider.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipe.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipes_provider.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 import "package:receptes_rostisseries_delgado/theme_custom.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configuration_provider.dart";
@@ -25,9 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,15 @@ class _MyAppState extends State<MyApp> {
         // Provider(create: (context) => SomeOtherClass()),
         ChangeNotifierProvider(create: (context) => InternetConnectivityProvider()),
         ChangeNotifierProvider(create: (context) => ConfigurationProvider(ingredients: ["Tomato", "Cheese"])),
-        ChangeNotifierProvider(create: (context) => RecipeProvider()),
+        ChangeNotifierProvider(
+          create: (context) => RecipesProvider(
+            recipes: [
+              Recipe(id: "1", name: "Recipe A", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
+              Recipe(id: "2", name: "Recipe B", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
+              Recipe(id: "3", name: "Recipe C", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
+            ],
+          ),
+        ),
       ],
       child: MaterialApp(
         // THEME

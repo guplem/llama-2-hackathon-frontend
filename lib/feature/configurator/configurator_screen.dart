@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configuration_provider.dart";
-import "package:receptes_rostisseries_delgado/feature/recipe/recipe_provider.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipes_provider.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipes_screen.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
-import "package:receptes_rostisseries_delgado/theme_custom.dart";
 
 class ConfiguratorScreen extends StatefulWidget {
   const ConfiguratorScreen({super.key});
@@ -16,16 +16,23 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
   Widget build(BuildContext context) {
     return ScaffoldCustom(
       pageTitle: "Configuration",
-      showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).ingredients.isNotEmpty,
+      showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).ingredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          RecipeProvider.getNew();
+          RecipesProvider.getNew();
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RecipesScreen()));
         },
         child: const Icon(Icons.auto_awesome),
       ),
       showFloatingActionButtonIfNoScrollableContent: true,
       appBar: AppBar(
         title: const Text("Configuration"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.library_books_outlined),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RecipesScreen())),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +66,7 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
                   ),
                 ),
           ),
-          getProvider<RecipeProvider>(context, listen: true).recipes.isEmpty ? const Gap.vertical() : const Gap.verticalNewSection(),
+          getProvider<RecipesProvider>(context, listen: true).recipes.isEmpty ? const Gap.vertical() : const Gap.verticalNewSection(),
         ],
       ),
     );
