@@ -2,7 +2,7 @@ import "dart:convert";
 
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
-import "package:receptes_rostisseries_delgado/constants.dart";
+import "package:receptes_rostisseries_delgado/api.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configuration_provider.dart";
 import "package:receptes_rostisseries_delgado/feature/recipe/recipe.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
@@ -19,33 +19,37 @@ class RecipeProvider extends ChangeNotifier {
 
   final List<Recipe> _recipes = [];
 
+  bool loadingRecipe = false;
   List<Recipe> get recipes => _recipes;
 
   static void getNew() async {
     Debug.logWarning(ConfigurationProvider.instance.ingredients.isEmpty, "A recipe cannot be generated without ingredients.");
+    Debug.logWarning(RecipeProvider.instance.loadingRecipe, "A recipe is already being generated.");
 
-    Response response;
-    // The below request is the same as above.
-    response = await clarifai.post(
+    RecipeProvider.instance.loadingRecipe = true;
+    RecipeProvider.instance.notifyListeners();
+
+
+    Response response = await clarifai.post(
       "llama-code/results",
       data: {
         "inputs": [
           {
             "data": {
-              "text": {
-                "raw": ConfigurationProvider.instance.ingredients.join(", ")
-              }
+              "text": {"raw": ConfigurationProvider.instance.ingredients.join(", ")}
             }
           }
         ]
       },
     );
 
-    // Debug.log(response.data.toString());
+    RecipeProvider.instance.loadingRecipe = false;
 
-    dynamic jsonResponse = jsonDecode(response.data.toString());/*.results[0].outputs[4].data.text.raw;*/
 
+    dynamic jsonResponse = jsonDecode(response.data.toString()); /*.results[0].outputs[4].data.text.raw;*/
     Debug.logDev("jsonResponse:\n\n$jsonResponse");
+
+    // TODO: save the recipe in the provider
 
     RecipeProvider.instance.notifyListeners();
   }
