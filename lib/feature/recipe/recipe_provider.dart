@@ -26,6 +26,8 @@ class RecipeProvider extends ChangeNotifier {
     Debug.logWarning(ConfigurationProvider.instance.ingredients.isEmpty, "A recipe cannot be generated without ingredients.");
     Debug.logWarning(RecipeProvider.instance.loadingRecipe, "A recipe is already being generated.");
 
+    Debug.log("Requesting new recipe...");
+
     RecipeProvider.instance.loadingRecipe = true;
     RecipeProvider.instance.notifyListeners();
 
@@ -45,9 +47,9 @@ class RecipeProvider extends ChangeNotifier {
 
     RecipeProvider.instance.loadingRecipe = false;
 
-
-    dynamic jsonResponse = jsonDecode(response.data.toString()); /*.results[0].outputs[4].data.text.raw;*/
-    Debug.logDev("jsonResponse:\n\n$jsonResponse");
+    dynamic recipe = response.data["results"][0]["outputs"][4]["data"]["text"]["raw"];
+    Debug.logDev(response.data.toString());
+    Debug.logSuccessDownload("Properly formatted response! $recipe");
 
     // TODO: save the recipe in the provider
 
