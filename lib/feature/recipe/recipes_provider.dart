@@ -1,5 +1,4 @@
 import "dart:convert";
-
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:receptes_rostisseries_delgado/api.dart";
@@ -70,7 +69,9 @@ class RecipesProvider extends ChangeNotifier {
     if (recipeJSON != null) {
       Debug.logSuccess("Recipe received.");
       // Save the recipe in the provider
-      RecipesProvider.instance._recipes.add(Recipe.fromJson(recipeJSON));
+      Recipe recipe = Recipe.fromJson(recipeJSON);
+      RecipesProvider.instance._recipes.add(recipe);
+      _loadImage(recipe: recipe);
     }
 
     RecipesProvider.instance.loadingRecipe = false;
@@ -128,4 +129,28 @@ class RecipesProvider extends ChangeNotifier {
     Debug.logSuccessDownload("Recipe in json format:\n${recipeJSON.toString()}");
     return recipeJSON;
   }
+
+  static void _loadImage({required Recipe recipe}) async {
+    Debug.logSuccessUpload("Requesting image for recipe...");
+
+    Response response = await clarifai.post(
+      "image-generator/results",
+      data: {
+        "inputs": [
+          {
+            "data": {
+              "text": {"raw": recipe.title}
+            }
+          }
+        ]
+      },
+    );
+
+    String img = response.data["results"][0]["outputs"][1]["data"]["image"]["base64"];
+    recipe.image = base64Decode(img);
+
+    Debug.logSuccessDownload("Recipe image loaded.");
+    RecipesProvider.instance.notifyListeners();
+  }
+
 }

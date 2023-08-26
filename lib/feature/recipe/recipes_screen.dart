@@ -62,7 +62,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap.verticalNewSection(),
-                    Text(recipe.name, style: ThemeCustom.textTheme(context).titleLarge),
+                    if (recipe.image != null) Image.memory(recipe.image!),
+                    const Gap.vertical(),
+                    Text(recipe.title, style: ThemeCustom.textTheme(context).titleLarge),
                     const Gap.verticalNewSection(),
                     const Divider(),
                     Text("Ingredients:", style: ThemeCustom.textTheme(context).titleMedium!.copyWith(fontWeight: FontWeight.bold)),

@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configurator_screen.dart";
-import "package:receptes_rostisseries_delgado/feature/recipe/recipe.dart";
 import "package:receptes_rostisseries_delgado/feature/recipe/recipes_provider.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 import "package:receptes_rostisseries_delgado/theme_custom.dart";
