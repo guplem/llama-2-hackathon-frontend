@@ -12,6 +12,14 @@ class ConfiguratorScreen extends StatefulWidget {
 }
 
 class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
+  final TextEditingController _ingredientTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    _ingredientTextController.dispose(); // Dispose the controller
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldCustom(
@@ -38,17 +46,17 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // const Gap.vertical(),
-          // Text("Ingredients",
-          //     style: ThemeCustom.textTheme(context).titleMedium),
           const Gap.verticalNewSection(),
           TextField(
+            controller: _ingredientTextController,
+            autocorrect: true,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Add ingredient",
             ),
             onSubmitted: (String value) {
               ConfigurationProvider.instance.addIngredient(value);
+              _ingredientTextController.clear();
             },
           ),
           const Gap.vertical(),
