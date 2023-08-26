@@ -43,6 +43,7 @@ dependencies:
   dio: ^5.3.2
   scroll_snap_list: ^0.9.1
   uuid: ^3.0.7
+  image_picker: ^1.0.2
 
 dev_dependencies:
   flutter_test:
