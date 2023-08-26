@@ -12,7 +12,7 @@ class ScaffoldCustom extends StatefulWidget {
   final PreferredSizeWidget? appBar;
 
   /// Ignored if the app is running in debug mode
-  final bool showAppBarInWeb;
+  final bool showAppBarInWeb, padding;
   final Widget? body, floatingActionButton;
 
   /// The scaffold will build a scrollable body if true.
@@ -31,6 +31,7 @@ class ScaffoldCustom extends StatefulWidget {
     this.isInBottomSheet = false,
     this.floatingActionButton,
     this.showFloatingActionButtonIfNoScrollableContent = true,
+    this.padding = true,
   })  : bodyBuilder = null,
         assert(body != null),
         super(key: key);
@@ -43,6 +44,7 @@ class ScaffoldCustom extends StatefulWidget {
     this.isInBottomSheet = false,
     this.floatingActionButton,
     this.showFloatingActionButtonIfNoScrollableContent = true,
+    this.padding = true,
     required this.bodyBuilder,
   })  : body = null,
         assert(bodyBuilder != null),
@@ -141,6 +143,7 @@ class _ScaffoldCustomState extends State<ScaffoldCustom> {
     return SafeArea(
       maintainBottomViewPadding: true,
       bottom: false,
+      minimum: widget.padding ? ThemeCustom.paddingSquaredStandard : EdgeInsets.zero,
       child: widget.body ?? widget.bodyBuilder!(context, _scrollController),
     );
   }
