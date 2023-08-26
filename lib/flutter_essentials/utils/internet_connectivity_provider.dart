@@ -1,6 +1,6 @@
 import "dart:async";
 import "package:flutter/foundation.dart";
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import "package:internet_connection_checker_plus/internet_connection_checker_plus.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 
 // https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple

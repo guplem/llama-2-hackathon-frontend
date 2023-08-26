@@ -50,7 +50,7 @@ class ShimmerEffect extends StatelessWidget {
       alignment: shimmerAlignment,
       shimmerWidget: Column(
         children: List.generate(lines * 2 + 1, (index) {
-          if (index % 2 == 0) return Gap.vertical();
+          if (index % 2 == 0) return const Gap.vertical();
           return Row(
             children: [
               Flexible(

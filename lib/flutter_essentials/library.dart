@@ -28,7 +28,4 @@ export "package:receptes_rostisseries_delgado/flutter_essentials/widgets/buttons
 export "package:receptes_rostisseries_delgado/flutter_essentials/widgets/buttons/icon_button_filled_tonal.dart";
 export "package:receptes_rostisseries_delgado/flutter_essentials/widgets/buttons/switch_button.dart";
 export "package:receptes_rostisseries_delgado/flutter_essentials/widgets/floating_button_visibility.dart";
-export "package:receptes_rostisseries_delgado/flutter_essentials/utils/schedule/day_time_frame.dart";
-export "package:receptes_rostisseries_delgado/flutter_essentials/utils/schedule/week_schedule.dart";
-export "package:receptes_rostisseries_delgado/flutter_essentials/utils/schedule/weekly_schedule.dart";
 export "package:receptes_rostisseries_delgado/flutter_essentials/utils/extensions/map.dart";

@@ -28,7 +28,7 @@ class FlutterShortcuts {
                 children: [
                   Row(children: [IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close_rounded))]),
                   child,
-                  Gap.vertical(),
+                  const Gap.vertical(),
                 ],
               ),
             ),

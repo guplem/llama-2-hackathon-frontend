@@ -1,6 +1,5 @@
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:flutter/scheduler.dart";
-import "package:receptes_rostisseries_delgado/dynamic_theme.dart";
 
 class ThemeCustom {
   ThemeCustom._();
@@ -34,7 +33,7 @@ class ThemeCustom {
 
   // THEME SETTINGS
   static ThemeData get defaultTheme => getTheme(color: defaultSeedColor, themeMode: defaultThemeMode, materialVersion: defaultMaterialVersion);
-  static Color get defaultSeedColor => DynamicTheme.colorOptions[9]; // Teal
+  static Color get defaultSeedColor => Colors.teal;
   static ThemeMode get defaultThemeMode => ThemeMode.system;
   static int get defaultMaterialVersion => 3;
 
@@ -42,7 +41,7 @@ class ThemeCustom {
     bool useLightMode = true;
     switch (themeMode) {
       case ThemeMode.system:
-        useLightMode = SchedulerBinding.instance.window.platformBrightness == Brightness.light;
+        useLightMode = PlatformDispatcher.instance.platformBrightness == Brightness.light;
         break;
       case ThemeMode.dark:
         useLightMode = false;
