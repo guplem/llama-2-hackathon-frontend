@@ -52,7 +52,8 @@ class RecipesProvider extends ChangeNotifier {
 
     if (recipeJSON != null) {
       Debug.logSuccess("Recipe received.");
-      // TODO: save the recipe in the provider
+      // Save the recipe in the provider
+      RecipesProvider.instance._recipes.add(Recipe.fromJson(recipeJSON));
     }
 
     RecipesProvider.instance.loadingRecipe = false;

@@ -1,4 +1,6 @@
 // Recipe class that contains ingredients and steps
+import "package:uuid/uuid.dart";
+
 class Recipe {
   Recipe({
     required this.id,
@@ -13,16 +15,9 @@ class Recipe {
   final List<String> steps;
 
   factory Recipe.fromJson(Map<String, dynamic> json) => Recipe(
-        id: json["id"],
-        name: json["name"],
+        id: const Uuid().v4(),
+        name: json["title"],
         ingredients: List<String>.from(json["ingredients"].map((x) => x)),
         steps: List<String>.from(json["steps"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "ingredients": List<dynamic>.from(ingredients.map((x) => x)),
-        "steps": List<dynamic>.from(steps.map((x) => x)),
-      };
 }
