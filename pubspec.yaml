@@ -44,6 +44,7 @@ dependencies:
   scroll_snap_list: ^0.9.1
   uuid: ^3.0.7
   image_picker: ^1.0.2
+  image_picker_android: ^0.8.7+4
 
 dev_dependencies:
   flutter_test:
