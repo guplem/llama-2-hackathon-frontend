@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-import "package:receptes_rostisseries_delgado/feature/configurator/repice_configuration.dart";
+import "package:receptes_rostisseries_delgado/feature/configurator/configuration_provider.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipe_provider.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 import "package:receptes_rostisseries_delgado/theme_custom.dart";
 
@@ -15,8 +16,11 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
   Widget build(BuildContext context) {
     return ScaffoldCustom(
       pageTitle: "Configuration",
+      showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).ingredients.isNotEmpty,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          RecipeProvider.getNew();
+        },
         child: const Icon(Icons.auto_awesome),
       ),
       showFloatingActionButtonIfNoScrollableContent: true,
@@ -37,28 +41,25 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
               labelText: "Add ingredient",
             ),
             onSubmitted: (String value) {
-              Debug.logDev("Submitted: $value");
-              RecipeConfigurationProvider.instance.addIngredient(value);
+              ConfigurationProvider.instance.addIngredient(value);
             },
           ),
           const Gap.vertical(),
           ...List.from(
-            getProvider<RecipeConfigurationProvider>(context, listen: true)
-                .ingredients
-                .map(
+            getProvider<ConfigurationProvider>(context, listen: true).ingredients.map(
                   (String ingredient) => ListTile(
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_rounded),
                       onPressed: () async {
                         await Future.delayed(const Duration(milliseconds: 250));
-                        RecipeConfigurationProvider.instance
-                            .removeIngredient(ingredient);
+                        ConfigurationProvider.instance.removeIngredient(ingredient);
                       },
                     ),
                     title: Text(ingredient),
                   ),
                 ),
           ),
+          getProvider<RecipeProvider>(context, listen: true).recipes.isEmpty ? const Gap.vertical() : const Gap.verticalNewSection(),
         ],
       ),
     );

@@ -12,7 +12,7 @@ class ScaffoldCustom extends StatefulWidget {
   final PreferredSizeWidget? appBar;
 
   /// Ignored if the app is running in debug mode
-  final bool showAppBarInWeb, padding;
+  final bool showAppBarInWeb, padding, showFloatingActionButton;
   final Widget? body, floatingActionButton;
 
   /// The scaffold will build a scrollable body if true.
@@ -32,6 +32,7 @@ class ScaffoldCustom extends StatefulWidget {
     this.floatingActionButton,
     this.showFloatingActionButtonIfNoScrollableContent = true,
     this.padding = true,
+    this.showFloatingActionButton = true,
   })  : bodyBuilder = null,
         assert(body != null),
         super(key: key);
@@ -45,6 +46,7 @@ class ScaffoldCustom extends StatefulWidget {
     this.floatingActionButton,
     this.showFloatingActionButtonIfNoScrollableContent = true,
     this.padding = true,
+    this.showFloatingActionButton = true,
     required this.bodyBuilder,
   })  : body = null,
         assert(bodyBuilder != null),
@@ -106,7 +108,7 @@ class _ScaffoldCustomState extends State<ScaffoldCustom> {
             appBar: (kIsWeb && !kDebugMode && !widget.showAppBarInWeb) ? null : widget.appBar,
             floatingActionButton: FloatingButtonVisibility(
               duration: floatingActionButtonAnimationDuration,
-              visible: _showFloatingActionButton,
+              visible: _showFloatingActionButton && widget.showFloatingActionButton,
               child: widget.floatingActionButton,
             ),
             body: NotificationListener<UserScrollNotification>(

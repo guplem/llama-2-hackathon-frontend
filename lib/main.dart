@@ -1,9 +1,10 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configurator_screen.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipe_provider.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 import "package:receptes_rostisseries_delgado/theme_custom.dart";
-import "package:receptes_rostisseries_delgado/feature/configurator/repice_configuration.dart";
+import "package:receptes_rostisseries_delgado/feature/configurator/configuration_provider.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,8 @@ class _MyAppState extends State<MyApp> {
       providers: [
         // Provider(create: (context) => SomeOtherClass()),
         ChangeNotifierProvider(create: (context) => InternetConnectivityProvider()),
-        ChangeNotifierProvider(create: (context) => RecipeConfigurationProvider()),
+        ChangeNotifierProvider(create: (context) => ConfigurationProvider(ingredients: ["Tomato", "Cheese"])),
+        ChangeNotifierProvider(create: (context) => RecipeProvider()),
       ],
       child: MaterialApp(
         // THEME
