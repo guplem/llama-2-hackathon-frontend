@@ -90,7 +90,7 @@ class _ScaffoldCustomState extends State<ScaffoldCustom> {
       key: _key,
       onVisibilityChanged: (info) {
         if (info.visibleFraction > 0.0) {
-          Debug.logUpdate('New visible screen: "${widget.pageTitle}". Setting application switcher description.', maxStackTraceRows: 0);
+          // Debug.logUpdate('New visible screen: "${widget.pageTitle}". Setting application switcher description.', maxStackTraceRows: 0);
           SystemChrome.setApplicationSwitcherDescription(
             ApplicationSwitcherDescription(
               label: widget.pageTitle,

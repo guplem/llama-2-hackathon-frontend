@@ -1,3 +1,4 @@
+import "dart:convert";
 
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
@@ -32,8 +33,37 @@ class RecipesProvider extends ChangeNotifier {
     RecipesProvider.instance.loadingRecipe = true;
     RecipesProvider.instance.notifyListeners();
 
+    String recipeText = await _getText();
+
+    Map<String, dynamic>? recipeJSON;
+    int maxTries = 3;
+    for (int i = 1; i <= maxTries; i++) {
+      try {
+        recipeJSON = await _getJson(text: recipeText);
+        break;
+      } catch (e) {
+        if (i == maxTries) {
+          Debug.logError("Too many tries ($i) to get a proper JSON formatted recipe: $e");
+        } else {
+          Debug.logWarning(true, asAssertion: false, "Error while getting JSON formatted recipe. Try number $i. Will retry...\n$e");
+        }
+      }
+    }
+
+    if (recipeJSON != null) {
+      Debug.logSuccess("Recipe received.");
+      // TODO: save the recipe in the provider
+    }
+
+    RecipesProvider.instance.loadingRecipe = false;
+    RecipesProvider.instance.notifyListeners();
+  }
+
+  static Future<String> _getText() async {
+    Debug.logSuccessUpload("Requesting text recipe...");
+
     Response response = await clarifai.post(
-      "llama-code/results",
+      "receipt-generator/results",
       data: {
         "inputs": [
           {
@@ -45,15 +75,32 @@ class RecipesProvider extends ChangeNotifier {
       },
     );
 
-    RecipesProvider.instance.loadingRecipe = false;
-    RecipesProvider.instance.notifyListeners();
+    String recipeText = response.data["results"][0]["outputs"][1]["data"]["text"]["raw"];
 
-    dynamic recipe = response.data["results"][0]["outputs"][4]["data"]["text"]["raw"];
-    Debug.logDev(response.data.toString());
-    Debug.logSuccessDownload("Properly formatted response! $recipe");
+    Debug.logSuccessDownload("Recipe in text format:\n$recipeText");
+    return recipeText;
+  }
 
-    // TODO: save the recipe in the provider
+  static Future<Map<String, dynamic>> _getJson({required String text}) async {
+    Debug.logSuccessUpload("Requesting JSON recipe...");
 
-    RecipesProvider.instance.notifyListeners();
+    Response response = await clarifai.post(
+      "receipt-generator/results",
+      data: {
+        "inputs": [
+          {
+            "data": {
+              "text": {"raw": text}
+            }
+          }
+        ]
+      },
+    );
+
+    String recipeAsString = response.data["results"][0]["outputs"][1]["data"]["text"]["raw"];
+    Map<String, dynamic> recipeJSON = Map<String, dynamic>.from(json.decode(recipeAsString));
+
+    Debug.logSuccessDownload("Recipe in json format:\n${recipeJSON.toString()}");
+    return recipeJSON;
   }
 }
