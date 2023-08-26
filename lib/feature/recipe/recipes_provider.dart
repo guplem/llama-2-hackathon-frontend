@@ -38,14 +38,31 @@ class RecipesProvider extends ChangeNotifier {
     Map<String, dynamic>? recipeJSON;
     int maxTries = 3;
     for (int i = 1; i <= maxTries; i++) {
+      String text = recipeText;
+
       try {
-        recipeJSON = await _getJson(text: recipeText);
+        switch (i) {
+          case 1:
+            text += "\nEnjoy!";
+            break;
+          case 2:
+            text += "\nI hope you like te recipe!";
+            break;
+          case 3:
+            text += "\nEnd of recipe.\nPlease, remember to close to Json.";
+            break;
+        }
+
+        recipeJSON = await _getJson(text: text, addFinalBracket: i == maxTries);
         break;
       } catch (e) {
         if (i == maxTries) {
+          RecipesProvider.instance.loadingRecipe = false;
+          RecipesProvider.instance.notifyListeners();
           Debug.logError("Too many tries ($i) to get a proper JSON formatted recipe: $e");
         } else {
           Debug.logWarning(true, asAssertion: false, "Error while getting JSON formatted recipe. Try number $i. Will retry...\n$e");
+          Future.delayed(const Duration(seconds: 1));
         }
       }
     }
@@ -64,7 +81,7 @@ class RecipesProvider extends ChangeNotifier {
     Debug.logSuccessUpload("Requesting text recipe...");
 
     Response response = await clarifai.post(
-      "receipt-generator/results",
+      "recipe-generator-large-13B/results",
       data: {
         "inputs": [
           {
@@ -82,11 +99,11 @@ class RecipesProvider extends ChangeNotifier {
     return recipeText;
   }
 
-  static Future<Map<String, dynamic>> _getJson({required String text}) async {
+  static Future<Map<String, dynamic>> _getJson({required String text, required bool addFinalBracket}) async {
     Debug.logSuccessUpload("Requesting JSON recipe...");
 
     Response response = await clarifai.post(
-      "receipt-generator/results",
+      "json-large-13B/results",
       data: {
         "inputs": [
           {
@@ -98,8 +115,15 @@ class RecipesProvider extends ChangeNotifier {
       },
     );
 
-    String recipeAsString = response.data["results"][0]["outputs"][1]["data"]["text"]["raw"];
-    Map<String, dynamic> recipeJSON = Map<String, dynamic>.from(json.decode(recipeAsString));
+    String recipeAsString = response.data["results"][0]["outputs"][2]["data"]["text"]["raw"];
+    late Map<String, dynamic> recipeJSON;
+
+    try {
+      recipeJSON = Map<String, dynamic>.from(json.decode(recipeAsString));
+    } catch (e) {
+      Debug.logDev("Adding extra bracket to the end of the recipe to try to make it a valid JSON.");
+      recipeJSON = Map<String, dynamic>.from(json.decode("$recipeAsString}"));
+    }
 
     Debug.logSuccessDownload("Recipe in json format:\n${recipeJSON.toString()}");
     return recipeJSON;

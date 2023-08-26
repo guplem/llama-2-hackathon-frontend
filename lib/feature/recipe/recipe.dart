@@ -17,7 +17,7 @@ class Recipe {
   factory Recipe.fromJson(Map<String, dynamic> json) => Recipe(
         id: const Uuid().v4(),
         name: json["title"],
-        ingredients: List<String>.from(json["ingredients"].map((x) => x)),
+        ingredients: List<String>.from(json["ingredients"].map((x) => x["name"])),
         steps: List<String>.from(json["steps"].map((x) => x)),
       );
 }
