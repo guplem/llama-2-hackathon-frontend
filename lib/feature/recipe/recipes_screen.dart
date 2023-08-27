@@ -7,7 +7,7 @@ import "package:receptes_rostisseries_delgado/theme_custom.dart";
 import "package:scroll_snap_list/scroll_snap_list.dart";
 
 class RecipesScreen extends StatefulWidget {
-  const RecipesScreen({super.key, this.initialRecipeId}) ;
+  const RecipesScreen({super.key, this.initialRecipeId});
 
   final String? initialRecipeId;
 
@@ -62,29 +62,54 @@ class _RecipesScreenState extends State<RecipesScreen> {
               }
               Recipe recipe = RecipesProvider.instance.recipes[index];
               return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Gap.verticalNewSection(),
-                    if (recipe.image != null) Hero(tag: recipe.id, child: Image.memory(recipe.image!)),
-                    if (recipe.image == null) Hero(tag: recipe.id, child: ShimmerEffect(enabled: true, child: Container(color: Colors.black, height: 200, width: double.infinity))),
-                    const Gap.vertical(),
-                    Text(recipe.title, style: ThemeCustom.textTheme(context).titleLarge),
-                    const Gap.verticalNewSection(),
-                    const Divider(),
-                    Text("Ingredients:", style: ThemeCustom.textTheme(context).titleMedium!.copyWith(fontWeight: FontWeight.bold)),
-                    const Gap.vertical(),
-                    ...recipe.ingredients.map((ingredient) => Text(ingredient.capitalizeFirstLetter() ?? "")),
-                    const Gap.verticalNewSection(),
-                    const Divider(),
-                    Text("Steps:", style: ThemeCustom.textTheme(context).titleMedium!.copyWith(fontWeight: FontWeight.bold)),
-                    const Gap.vertical(),
-                    ...recipe.steps.map((step) => OutlinedCard(child: Text(step))),
-                    const Gap.vertical(),
-                    // const Placeholder(
-                    //   fallbackHeight: 1000,
-                    // )
-                  ],
+                child: Padding(
+                  padding: ThemeCustom.paddingInnerCard,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Gap.verticalNewSection(),
+                      if (recipe.image != null) Hero(tag: recipe.id, child: ClipRRect(borderRadius: ThemeCustom.borderRadiusStandard, child: Image.memory(recipe.image!))),
+                      if (recipe.image == null) Hero(tag: recipe.id, child: ShimmerEffect(enabled: true, child: Container(color: Colors.black, height: 200, width: double.infinity))),
+                      const Gap.vertical(),
+                      Text(recipe.title, style: ThemeCustom.textTheme(context).titleLarge),
+                      const Gap.verticalNewSection(),
+                      const Divider(),
+                      Text("Ingredients:", style: ThemeCustom.textTheme(context).titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                      const Gap.vertical(),
+                      ...recipe.ingredients.map((ingredient) => Padding(
+                        padding: ThemeCustom.paddingHorizontal,
+                        child: Text("- ${ingredient.capitalizeFirstLetter() ?? ""}"),
+                      )),
+                      const Gap.verticalNewSection(),
+                      const Divider(),
+                      Text("Steps:", style: ThemeCustom.textTheme(context).titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                      const Gap.vertical(),
+                      ...recipe.steps.map((step) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: ThemeCustom.borderRadiusFullyRounded,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: ThemeCustom.colorScheme(context).inversePrimary,
+                                      shape: BoxShape.circle
+                                  ),
+                                  child: Padding(
+                                    padding: ThemeCustom.paddingSquaredStandard,
+                                    child: Text("${recipe.steps.indexOf(step) + 1}", style: ThemeCustom.textTheme(context).titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                  ),
+                                ),
+                              ),
+                              const Gap.horizontal(),
+                              Expanded(child: OutlinedCard(child: Text(step))),
+                            ],
+                          )),
+                      const Gap.vertical(),
+                      // const Placeholder(
+                      //   fallbackHeight: 1000,
+                      // )
+                    ],
+                  ),
                 ),
               );
             }),
