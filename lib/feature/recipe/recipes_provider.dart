@@ -122,8 +122,13 @@ class RecipesProvider extends ChangeNotifier {
     try {
       recipeJSON = Map<String, dynamic>.from(json.decode(recipeAsString));
     } catch (e) {
-      Debug.logDev("Adding extra bracket to the end of the recipe to try to make it a valid JSON.");
-      recipeJSON = Map<String, dynamic>.from(json.decode("$recipeAsString}"));
+      try {
+        Debug.logDev('Adding extra bracket "}" to the end of the recipe to try to make it a valid JSON.');
+        recipeJSON = Map<String, dynamic>.from(json.decode("$recipeAsString}"));
+      } catch (e) {
+        Debug.logDev('Adding extra bracket and closing list "}]" to the end of the recipe to try to make it a valid JSON.');
+        recipeJSON = Map<String, dynamic>.from(json.decode("$recipeAsString]}"));
+      }
     }
 
     Debug.logSuccessDownload("Recipe in json format:\n${recipeJSON.toString()}");
@@ -152,5 +157,4 @@ class RecipesProvider extends ChangeNotifier {
     Debug.logSuccessDownload("Recipe image loaded.");
     RecipesProvider.instance.notifyListeners();
   }
-
 }
