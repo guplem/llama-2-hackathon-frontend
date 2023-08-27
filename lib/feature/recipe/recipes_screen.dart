@@ -63,6 +63,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   children: [
                     const Gap.verticalNewSection(),
                     if (recipe.image != null) Image.memory(recipe.image!),
+                    if (recipe.image == null) ShimmerEffect(enabled: true, child: Container(color: Colors.black, height: 200, width: double.infinity)),
                     const Gap.vertical(),
                     Text(recipe.title, style: ThemeCustom.textTheme(context).titleLarge),
                     const Gap.verticalNewSection(),
