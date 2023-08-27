@@ -56,18 +56,24 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
             // const Gap.verticalNewSection(),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.from(getProvider<ConfigurationProvider>(context, listen: true).desires.entries.map((desire) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal/2),
-                    child: FilterChip(
-                        selected: desire.value,
-                        label: Text(desire.key),
-                        onSelected: (bool value) {
-                          ConfigurationProvider.instance.updateDesireStatus(desire.key, value);
-                        }),
-                  );
-                })),
+              child: SizedBox(
+                height: 200,
+                child: Wrap(
+                  spacing: ThemeCustom.spaceHorizontal / 2,
+                  runSpacing: ThemeCustom.spaceVertical / 2,
+                  direction: Axis.vertical,
+                  children: List.from(getProvider<ConfigurationProvider>(context, listen: true).desires.entries.map((desire) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal / 2),
+                      child: FilterChip(
+                          selected: desire.value,
+                          label: Text(desire.key),
+                          onSelected: (bool value) {
+                            ConfigurationProvider.instance.updateDesireStatus(desire.key, value);
+                          }),
+                    );
+                  })),
+                ),
               ),
             ),
             const Gap.verticalNewSection(),
@@ -105,8 +111,8 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
             ),
             const Gap.vertical(),
             Wrap(
-              spacing: ThemeCustom.spaceHorizontal,
-              runSpacing: ThemeCustom.spaceVertical,
+              spacing: ThemeCustom.spaceHorizontal / 2,
+              runSpacing: ThemeCustom.spaceVertical / 2,
               children: List.from(
                 getProvider<ConfigurationProvider>(context, listen: true).ingredients.entries.map(
                   (ingredient) {
