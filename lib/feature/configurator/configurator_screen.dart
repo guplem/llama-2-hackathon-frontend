@@ -52,12 +52,12 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients) const LinearProgressIndicator(),
-            // const Gap.verticalNewSection(),
+            const Gap.verticalNewSection(),
+            Text("Preferences", style: ThemeCustom.textTheme(context).titleLarge),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                height: 200,
+                height: 160,
                 child: Wrap(
                   spacing: ThemeCustom.spaceHorizontal / 2,
                   runSpacing: ThemeCustom.spaceVertical / 2,
@@ -77,6 +77,33 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
               ),
             ),
             const Gap.verticalNewSection(),
+            Text("Appliances", style: ThemeCustom.textTheme(context).titleLarge),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                height: 160,
+                child: Wrap(
+                  spacing: ThemeCustom.spaceHorizontal / 2,
+                  runSpacing: ThemeCustom.spaceVertical / 2,
+                  direction: Axis.vertical,
+                  children: List.from(getProvider<ConfigurationProvider>(context, listen: true).appliances.entries.map((desire) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal / 2),
+                      child: FilterChip(
+                          selected: desire.value,
+                          label: Text(desire.key),
+                          onSelected: (bool value) {
+                            ConfigurationProvider.instance.updateApplianceStatus(desire.key, value);
+                          }),
+                    );
+                  })),
+                ),
+              ),
+            ),
+            const Gap.verticalNewSection(),
+            Text("Ingredients", style: ThemeCustom.textTheme(context).titleLarge),
+            if (getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients) const LinearProgressIndicator(),
+            SizedBox(height: getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients ? ThemeCustom.spaceVertical / 2 : ThemeCustom.spaceVertical),
             Row(
               children: [
                 Expanded(

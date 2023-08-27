@@ -18,11 +18,12 @@ class ConfigurationProvider extends ChangeNotifier {
 
   static late final ConfigurationProvider instance;
 
-//# region ingredients
+  //# region ingredients
 
   bool loadingIngredients = false;
 
   List<String> get activeIngredients => _ingredients.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().cast<String>();
+  List<String> get deactivatedIngredients => _ingredients.entries.where((entry) => entry.value == false).map((entry) => entry.key).toList().cast<String>();
 
   Map<String, bool> get ingredients => Map<String, bool>.from(_ingredients);
   late final Map<String, bool> _ingredients;
@@ -93,6 +94,8 @@ class ConfigurationProvider extends ChangeNotifier {
   //# region desires
 
   List<String> get activeDesires => desires.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().cast<String>();
+  List<String> get deactivatedDesires => desires.entries.where((entry) => entry.value == false).map((entry) => entry.key).toList().cast<String>();
+
   Map<String, bool> get desires => _desires;
   final Map<String, bool> _desires = {
     "Vegetarian": false,
@@ -173,4 +176,71 @@ class ConfigurationProvider extends ChangeNotifier {
   }
 
   //# endregion desires
+
+  //# region appliances
+
+  List<String> get activeAppliances => appliances.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().cast<String>();
+  List<String> get deactivatedAppliances => appliances.entries.where((entry) => entry.value == false).map((entry) => entry.key).toList().cast<String>();
+
+  Map<String, bool> get appliances => _appliances;
+  final Map<String, bool> _appliances = {
+    "Stove": true,
+    "Oven": true,
+    "Instant Pot": true,
+    "Air fryer": false,
+    "Blender": false,
+    "Bread machine": false,
+    "Coffee maker": false,
+    "Convection oven": false,
+    "Deep fryer": false,
+    "Dutch oven": false,
+    "Electric skillet": false,
+    "Food processor": false,
+    "Grill": false,
+    "Juicer": false,
+    "Microwave": false,
+    "Pressure cooker": false,
+    "Rice cooker": false,
+    "Slow cooker": false,
+    "Sous vide": false,
+    "Toaster": false,
+    "Waffle maker": false,
+    "Kettle": false,
+    "Mixer": false,
+    "Handheld immersion blender": false,
+    "Bread maker": false,
+    "Panini press": false,
+  };
+
+
+
+  void updateApplianceStatus(String appliance, bool isActive) {
+    if (appliance.isEmpty) return;
+    _appliances[appliance] = isActive;
+    notifyListeners();
+  }
+
+  void addAppliance(String appliance) {
+    if (appliance.isEmpty) return;
+    _appliances[appliance] = true;
+    notifyListeners();
+  }
+
+  void removeAppliance(String appliance) {
+    if (appliance.isEmpty) return;
+    _appliances.remove(appliance);
+    notifyListeners();
+  }
+
+  void deactivateAppliance(String appliance) {
+    updateApplianceStatus(appliance, false);
+  }
+
+  void activateAppliance(String appliance) {
+    updateApplianceStatus(appliance, true);
+  }
+
+
+
+//# endregion appliances
 }
