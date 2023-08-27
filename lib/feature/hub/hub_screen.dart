@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configuration_provider.dart";
 import "package:receptes_rostisseries_delgado/feature/configurator/configurator_screen.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipe_preview.dart";
 import "package:receptes_rostisseries_delgado/feature/recipe/recipes_provider.dart";
 import "package:receptes_rostisseries_delgado/feature/recipe/recipes_screen.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
@@ -29,7 +30,7 @@ class _HubScreenState extends State<HubScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 2,
       child: ScaffoldCustom(
         pageTitle: "Kitchen configurator",
@@ -71,15 +72,17 @@ class _HubScreenState extends State<HubScreen> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height / 3,
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            color: Colors.white,
-                          ),
-                          Container(
-                            height: MediaQuery.of(context).size.height / 3,
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            color: Colors.green,
+                          ...List.from(
+                            getProvider<RecipesProvider>(context, listen: true).recipes.map(
+                                  (recipe) => Padding(
+                                    padding: ThemeCustom.paddingSquaredStandard.copyWith(right: 0),
+                                    child: SizedBox(
+                                      height: MediaQuery.of(context).size.height / 3,
+                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      child: RecipePreview(recipe: recipe),
+                                    ),
+                                  ),
+                                ),
                           ),
                         ],
                       )),

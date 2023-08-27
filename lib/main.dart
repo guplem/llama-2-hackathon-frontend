@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:receptes_rostisseries_delgado/feature/hub/hub_screen.dart";
+import "package:receptes_rostisseries_delgado/feature/recipe/recipe.dart";
 import "package:receptes_rostisseries_delgado/feature/recipe/recipes_provider.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 import "package:receptes_rostisseries_delgado/theme_custom.dart";
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => RecipesProvider(
             recipes: [
-              // Recipe(id: "1", name: "Recipe A", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
+              // Recipe(type: "ABC", id: "1", title: "Recipe A", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
               // Recipe(id: "2", name: "Recipe B", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
               // Recipe(id: "3", name: "Recipe C", ingredients: ["Ing 1", "Ing 2", "Ing 3"], steps: ["Step 1", "Step 2", "Step 3"]),
             ],
