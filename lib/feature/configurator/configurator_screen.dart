@@ -7,6 +7,7 @@ import "package:image_picker_android/image_picker_android.dart";
 
 // ignore: depend_on_referenced_packages
 import "package:image_picker_platform_interface/image_picker_platform_interface.dart";
+import "package:receptes_rostisseries_delgado/theme_custom.dart";
 
 class ConfiguratorScreen extends StatefulWidget {
   const ConfiguratorScreen({super.key});
@@ -86,19 +87,20 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
               ],
             ),
             const Gap.vertical(),
-            ...List.from(
-              getProvider<ConfigurationProvider>(context, listen: true).activeIngredients.map(
-                    (String ingredient) => ListTile(
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete_rounded),
-                        onPressed: () async {
-                          await Future.delayed(const Duration(milliseconds: 250));
-                          ConfigurationProvider.instance.removeIngredient(ingredient);
+            Wrap(
+              spacing: ThemeCustom.spaceHorizontal,
+              runSpacing: ThemeCustom.spaceVertical,
+              children: List.from(
+                getProvider<ConfigurationProvider>(context, listen: true).ingredients.entries.map(
+                      (ingredient) => FilterChip(
+                        selected: ingredient.value,
+                        label: Text(ingredient.key),
+                        onSelected: (bool value) {
+                          ConfigurationProvider.instance.updateIngredientStatus(ingredient.key, value);
                         },
                       ),
-                      title: Text(ingredient),
                     ),
-                  ),
+              ),
             ),
             getProvider<RecipesProvider>(context, listen: true).recipes.isEmpty ? const Gap.vertical() : const Gap.verticalNewSection(),
           ],

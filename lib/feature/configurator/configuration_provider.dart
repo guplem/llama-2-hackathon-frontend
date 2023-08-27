@@ -12,46 +12,43 @@ import "package:receptes_rostisseries_delgado/api.dart";
 // getProvider<X> vs. Consumer<X> https://stackoverflow.com/a/58774889/7927429
 class ConfigurationProvider extends ChangeNotifier {
   ConfigurationProvider({List<String>? ingredients}) {
-    _activeIngredients = ingredients ?? [];
-    instance = this; // Singleton pattern
+    instance = this;
+    _ingredients = Map.fromEntries(ingredients?.map((ingredient) => MapEntry(ingredient, true)) ?? {});
   }
+
+  static late final ConfigurationProvider instance;
 
   bool loadingIngredients = false;
 
-  /// Recommended to use this when notifications about updates are not required instead of using getProvider<LoggedUserProvider>(context, listen: false). Reason: avoid over use of context
-  static late final ConfigurationProvider instance; // Singleton pattern
+  List<String> get activeIngredients => _ingredients.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().cast<String>();
 
-  List<String> get activeIngredients => _activeIngredients;
-  late final List<String> _activeIngredients;
+  Map<String, bool> get ingredients => _ingredients;
+  late final Map<String, bool> _ingredients;
 
-  List<String> get deactivatedIngredients => _deactivatedIngredients;
-  late final List<String> _deactivatedIngredients;
+  void updateIngredientStatus(String ingredient, bool isActive) {
+    if (ingredient.isEmpty) return;
+    _ingredients[ingredient] = isActive;
+    notifyListeners();
+  }
 
   void addIngredient(String ingredient) {
-    if (ingredient.isNullOrEmpty) return;
-    _activeIngredients.add(ingredient);
+    if (ingredient.isEmpty) return;
+    _ingredients[ingredient] = true;
     notifyListeners();
   }
 
   void removeIngredient(String ingredient) {
-    if (ingredient.isNullOrEmpty) return;
-    _activeIngredients.remove(ingredient);
-    _deactivatedIngredients.remove(ingredient);
+    if (ingredient.isEmpty) return;
+    _ingredients.remove(ingredient);
     notifyListeners();
   }
 
   void deactivateIngredient(String ingredient) {
-    if (ingredient.isNullOrEmpty) return;
-    _activeIngredients.remove(ingredient);
-    _deactivatedIngredients.add(ingredient);
-    notifyListeners();
+    updateIngredientStatus(ingredient, false);
   }
 
   void activateIngredient(String ingredient) {
-    if (ingredient.isNullOrEmpty) return;
-    _activeIngredients.add(ingredient);
-    _deactivatedIngredients.remove(ingredient);
-    notifyListeners();
+    updateIngredientStatus(ingredient, true);
   }
 
   void addIngredientsFromImage(XFile image) async {
@@ -85,7 +82,7 @@ class ConfigurationProvider extends ChangeNotifier {
     Debug.logSuccessDownload("Ingredients in text format:\n$ingredients");
 
     loadingIngredients = false;
-    _deactivatedIngredients.addAll(ingredients);
+    _ingredients.addAll(Map.fromEntries(ingredients.map((ingredient) => MapEntry(ingredient, false))));
     notifyListeners();
   }
 }
