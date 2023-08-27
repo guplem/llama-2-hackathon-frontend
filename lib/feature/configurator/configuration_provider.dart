@@ -23,6 +23,7 @@ class ConfigurationProvider extends ChangeNotifier {
   bool loadingIngredients = false;
 
   List<String> get activeIngredients => _ingredients.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().cast<String>();
+
   List<String> get deactivatedIngredients => _ingredients.entries.where((entry) => entry.value == false).map((entry) => entry.key).toList().cast<String>();
 
   Map<String, bool> get ingredients => Map<String, bool>.from(_ingredients);
@@ -94,6 +95,7 @@ class ConfigurationProvider extends ChangeNotifier {
   //# region desires
 
   List<String> get activeDesires => desires.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().cast<String>();
+
   List<String> get deactivatedDesires => desires.entries.where((entry) => entry.value == false).map((entry) => entry.key).toList().cast<String>();
 
   Map<String, bool> get desires => _desires;
@@ -180,6 +182,7 @@ class ConfigurationProvider extends ChangeNotifier {
   //# region appliances
 
   List<String> get activeAppliances => appliances.entries.where((entry) => entry.value == true).map((entry) => entry.key).toList().cast<String>();
+
   List<String> get deactivatedAppliances => appliances.entries.where((entry) => entry.value == false).map((entry) => entry.key).toList().cast<String>();
 
   Map<String, bool> get appliances => _appliances;
@@ -212,8 +215,6 @@ class ConfigurationProvider extends ChangeNotifier {
     "Panini press": false,
   };
 
-
-
   void updateApplianceStatus(String appliance, bool isActive) {
     if (appliance.isEmpty) return;
     _appliances[appliance] = isActive;
@@ -239,8 +240,6 @@ class ConfigurationProvider extends ChangeNotifier {
   void activateAppliance(String appliance) {
     updateApplianceStatus(appliance, true);
   }
-
-
 
   //# endregion appliances
 
@@ -283,7 +282,11 @@ class ConfigurationProvider extends ChangeNotifier {
   //# region difficulty
 
   String get difficultyAsText {
-    return _difficulty == 2 ? "Easy" : _difficulty == 2 ? "Medium" : "Hard";
+    return _difficulty == 2
+        ? "Easy"
+        : _difficulty == 2
+            ? "Medium"
+            : "Hard";
   }
 
   int get difficulty => _difficulty;
@@ -297,7 +300,16 @@ class ConfigurationProvider extends ChangeNotifier {
 
   // endregion difficulty
 
+  //# region type
 
+  String get type => _type;
+  String _type = "Any";
 
+  void updateType(String type) {
+    if (type.isEmpty) return;
+    _type = type;
+    notifyListeners();
+  }
 
+  // endregion type
 }

@@ -32,6 +32,7 @@ class RecipesProvider extends ChangeNotifier {
     RecipesProvider.instance.loadingRecipe = true;
     RecipesProvider.instance.notifyListeners();
 
+    String type = ConfigurationProvider.instance.type;
     String recipeText = await _getText();
 
     Map<String, dynamic>? recipeJSON;
@@ -69,7 +70,7 @@ class RecipesProvider extends ChangeNotifier {
     if (recipeJSON != null) {
       Debug.logSuccess("Recipe received.");
       // Save the recipe in the provider
-      Recipe recipe = Recipe.fromJson(recipeJSON);
+      Recipe recipe = Recipe.fromJson(recipeJSON, type: type);
       RecipesProvider.instance._recipes.add(recipe);
       _loadImage(recipe: recipe);
     }
@@ -90,7 +91,8 @@ class RecipesProvider extends ChangeNotifier {
         "Food for: ${ConfigurationProvider.instance.people} people\n"
         "Difficulty: ${ConfigurationProvider.instance.difficultyAsText}\n"
         "Preferences: ${ConfigurationProvider.instance.activeDesires.join(", ")}\n"
-        "Available appliances: ${ConfigurationProvider.instance.activeDesires.join(", ")}\n";
+        "Available appliances: ${ConfigurationProvider.instance.activeDesires.join(", ")}\n"
+        "Food type: ${ConfigurationProvider.instance.type}\n";
 
     // "recipe-generator-large-13B/results",
     Response response = await clarifai.post(

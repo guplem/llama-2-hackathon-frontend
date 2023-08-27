@@ -70,7 +70,7 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
                     ),
                   ),
                   OutlinedCard(
-                    padding: ThemeCustom.paddingInnerCard.copyWith(top: ThemeCustom.paddingInnerCard.top / 1.9, bottom: ThemeCustom.paddingInnerCard.bottom / 1.9),
+                    // padding: ThemeCustom.paddingInnerCard.copyWith(top: ThemeCustom.paddingInnerCard.top / 1.9, bottom: ThemeCustom.paddingInnerCard.bottom / 1.9),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -103,6 +103,34 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
                       ],
                     ),
                   ),
+                  OutlinedCard(
+                    // padding: ThemeCustom.paddingInnerCard.copyWith(top: ThemeCustom.paddingInnerCard.top / 1.9, bottom: ThemeCustom.paddingInnerCard.bottom / 1.9),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.fastfood_rounded),
+                        const Gap.horizontal(),
+                        DropdownButton<String>(
+                            underline: Container(),
+                            padding: EdgeInsets.zero,
+                            value: getProvider<ConfigurationProvider>(context, listen: true).type,
+                            onChanged: (String? value) {
+                              ConfigurationProvider.instance.updateType(value!);
+                            },
+                            items: const [
+                              DropdownMenuItem(value: "Any", child: Text("Any")),
+                              DropdownMenuItem(value: "Breakfast", child: Text("Breakfast")),
+                              DropdownMenuItem(value: "Lunch", child: Text("Lunch")),
+                              DropdownMenuItem(value: "Dinner", child: Text("Dinner")),
+                              DropdownMenuItem(value: "Snacks", child: Text("Snacks")),
+                              DropdownMenuItem(value: "Desserts", child: Text("Desserts")),
+                              DropdownMenuItem(value: "Beverages", child: Text("Beverages")),
+                              DropdownMenuItem(value: "Appetizers", child: Text("Appetizers")),
+                              DropdownMenuItem(value: "Side Dishes", child: Text("Side Dishes")),
+                            ]),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
