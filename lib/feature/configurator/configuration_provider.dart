@@ -242,5 +242,62 @@ class ConfigurationProvider extends ChangeNotifier {
 
 
 
-//# endregion appliances
+  //# endregion appliances
+
+  //# region people
+
+  int get people => _people;
+  int _people = 2;
+
+  void updatePeople(int people) {
+    if (people < 1) return;
+    _people = people;
+    notifyListeners();
+  }
+
+  void addPerson() {
+    _people++;
+    notifyListeners();
+  }
+
+  void removePerson() {
+    if (_people > 1) _people--;
+    notifyListeners();
+  }
+
+  //# endregion people
+
+  //# region duration
+
+  Duration get duration => _duration;
+  Duration _duration = const Duration(minutes: 30);
+
+  void updateDuration(Duration duration) {
+    if (duration.inMinutes < 1) return;
+    _duration = duration;
+    notifyListeners();
+  }
+
+  // endregion duration
+
+  //# region difficulty
+
+  String get difficultyAsText {
+    return _difficulty == 2 ? "Easy" : _difficulty == 2 ? "Medium" : "Hard";
+  }
+
+  int get difficulty => _difficulty;
+  int _difficulty = 2;
+
+  void updateDifficulty(int difficulty) {
+    if (difficulty < 1 || difficulty > 3) return;
+    _difficulty = difficulty;
+    notifyListeners();
+  }
+
+  // endregion difficulty
+
+
+
+
 }

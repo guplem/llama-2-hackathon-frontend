@@ -54,26 +54,81 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Gap.verticalNewSection(),
+            Center(
+              child: Wrap(
+                direction: Axis.horizontal,
+                children: [
+                  OutlinedCard(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(getProvider<ConfigurationProvider>(context, listen: true).people > 1 ? Icons.people_rounded : Icons.person_rounded),
+                        IconButton(onPressed: () => ConfigurationProvider.instance.removePerson(), icon: const Icon(Icons.remove_rounded)),
+                        Text(getProvider<ConfigurationProvider>(context, listen: true).people.toString()),
+                        IconButton(onPressed: () => ConfigurationProvider.instance.addPerson(), icon: const Icon(Icons.add_rounded)),
+                      ],
+                    ),
+                  ),
+                  OutlinedCard(
+                    padding: ThemeCustom.paddingInnerCard.copyWith(top: ThemeCustom.paddingInnerCard.top / 1.9, bottom: ThemeCustom.paddingInnerCard.bottom / 1.9),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.speed_rounded),
+                        const Gap.horizontal(),
+                        DropdownButton<int>(
+                            underline: Container(),
+                            padding: EdgeInsets.zero,
+                            value: getProvider<ConfigurationProvider>(context, listen: true).difficulty,
+                            onChanged: (int? value) {
+                              ConfigurationProvider.instance.updateDifficulty(value!);
+                            },
+                            items: const [
+                              DropdownMenuItem(value: 1, child: Text("Easy")),
+                              DropdownMenuItem(value: 2, child: Text("Medium")),
+                              DropdownMenuItem(value: 3, child: Text("Hard")),
+                            ]),
+                      ],
+                    ),
+                  ),
+                  OutlinedCard(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.timer_rounded),
+                        IconButton(onPressed: () => ConfigurationProvider.instance.updateDuration(ConfigurationProvider.instance.duration - const Duration(minutes: 10)), icon: const Icon(Icons.remove_rounded)),
+                        Text(getProvider<ConfigurationProvider>(context, listen: true).duration.inMinutes.toString()),
+                        // IconButton(onPressed: () => ConfigurationProvider.instance.updateDuration(getProvider<ConfigurationProvider>(context, listen: false).duration + const Duration(minutes: 5)), icon: const Icon(Icons.add_rounded)),
+                        IconButton(onPressed: () => ConfigurationProvider.instance.updateDuration(ConfigurationProvider.instance.duration + const Duration(minutes: 10)), icon: const Icon(Icons.add_rounded)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Gap.verticalNewSection(),
             Text("Preferences", style: ThemeCustom.textTheme(context).titleLarge),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
                 height: 160,
-                child: Wrap(
-                  spacing: ThemeCustom.spaceHorizontal / 2,
-                  runSpacing: ThemeCustom.spaceVertical / 2,
-                  direction: Axis.vertical,
-                  children: List.from(getProvider<ConfigurationProvider>(context, listen: true).desires.entries.map((desire) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal / 2),
-                      child: FilterChip(
-                          selected: desire.value,
-                          label: Text(desire.key),
-                          onSelected: (bool value) {
-                            ConfigurationProvider.instance.updateDesireStatus(desire.key, value);
-                          }),
-                    );
-                  })),
+                child: Center(
+                  child: Wrap(
+                    spacing: ThemeCustom.spaceHorizontal / 2,
+                    runSpacing: ThemeCustom.spaceVertical / 2,
+                    direction: Axis.vertical,
+                    children: List.from(getProvider<ConfigurationProvider>(context, listen: true).desires.entries.map((desire) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal / 2),
+                        child: FilterChip(
+                            selected: desire.value,
+                            label: Text(desire.key),
+                            onSelected: (bool value) {
+                              ConfigurationProvider.instance.updateDesireStatus(desire.key, value);
+                            }),
+                      );
+                    })),
+                  ),
                 ),
               ),
             ),
@@ -83,21 +138,23 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
               scrollDirection: Axis.horizontal,
               child: SizedBox(
                 height: 160,
-                child: Wrap(
-                  spacing: ThemeCustom.spaceHorizontal / 2,
-                  runSpacing: ThemeCustom.spaceVertical / 2,
-                  direction: Axis.vertical,
-                  children: List.from(getProvider<ConfigurationProvider>(context, listen: true).appliances.entries.map((desire) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal / 2),
-                      child: FilterChip(
-                          selected: desire.value,
-                          label: Text(desire.key),
-                          onSelected: (bool value) {
-                            ConfigurationProvider.instance.updateApplianceStatus(desire.key, value);
-                          }),
-                    );
-                  })),
+                child: Center(
+                  child: Wrap(
+                    spacing: ThemeCustom.spaceHorizontal / 2,
+                    runSpacing: ThemeCustom.spaceVertical / 2,
+                    direction: Axis.vertical,
+                    children: List.from(getProvider<ConfigurationProvider>(context, listen: true).appliances.entries.map((desire) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal / 2),
+                        child: FilterChip(
+                            selected: desire.value,
+                            label: Text(desire.key),
+                            onSelected: (bool value) {
+                              ConfigurationProvider.instance.updateApplianceStatus(desire.key, value);
+                            }),
+                      );
+                    })),
+                  ),
                 ),
               ),
             ),
@@ -138,20 +195,27 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
               ],
             ),
             const Gap.vertical(),
-            Wrap(
-              spacing: ThemeCustom.spaceHorizontal / 2,
-              runSpacing: ThemeCustom.spaceVertical / 2,
-              children: List.from(
-                getProvider<ConfigurationProvider>(context, listen: true).ingredients.entries.map(
-                  (ingredient) {
-                    return FilterChip(
-                      selected: ingredient.value,
-                      label: Text(ingredient.key),
-                      onSelected: (bool value) {
-                        ConfigurationProvider.instance.updateIngredientStatus(ingredient.key, value);
-                      },
-                    );
-                  },
+            Center(
+              child: Wrap(
+                spacing: ThemeCustom.spaceHorizontal / 2,
+                runSpacing: ThemeCustom.spaceVertical / 2,
+                children: List.from(
+                  getProvider<ConfigurationProvider>(context, listen: true).ingredients.entries.map(
+                    (ingredient) {
+                      return GestureDetector(
+                        onLongPress: () {
+                          ConfigurationProvider.instance.removeIngredient(ingredient.key);
+                        },
+                        child: FilterChip(
+                          selected: ingredient.value,
+                          label: Text(ingredient.key),
+                          onSelected: (bool value) {
+                            ConfigurationProvider.instance.updateIngredientStatus(ingredient.key, value);
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
