@@ -40,17 +40,17 @@ class RecipesProvider extends ChangeNotifier {
       String text = recipeText;
 
       try {
-        switch (i) {
-          case 1:
-            text += "\nEnjoy!";
-            break;
-          case 2:
-            text += "\nI hope you like te recipe!";
-            break;
-          case 3:
-            text += "\nEnd of recipe.\nPlease, remember to close to Json.";
-            break;
-        }
+        // switch (i) {
+        //   case 1:
+        //     text += "\nEnjoy!";
+        //     break;
+        //   case 2:
+        //     text += "\nI hope you like te recipe!";
+        //     break;
+        //   case 3:
+        //     text += "\nEnd of recipe.\nPlease, remember to close to Json.";
+        //     break;
+        // }
 
         recipeJSON = await _getJson(text: text, addFinalBracket: i == maxTries);
         break;
@@ -92,8 +92,9 @@ class RecipesProvider extends ChangeNotifier {
         "Preferences: ${ConfigurationProvider.instance.activeDesires.join(", ")}\n"
         "Available appliances: ${ConfigurationProvider.instance.activeDesires.join(", ")}\n";
 
+    // "recipe-generator-large-13B/results",
     Response response = await clarifai.post(
-      "recipe-generator-large-13B/results",
+      "recipe-generator-gpt-4/results",
       data: {
         "inputs": [
           {
@@ -114,8 +115,9 @@ class RecipesProvider extends ChangeNotifier {
   static Future<Map<String, dynamic>> _getJson({required String text, required bool addFinalBracket}) async {
     Debug.logSuccessUpload("Requesting JSON recipe...");
 
+    // "json-large-13B/results",
     Response response = await clarifai.post(
-      "json-large-13B/results",
+      "json-formatter-gpt-4/results",
       data: {
         "inputs": [
           {
