@@ -53,6 +53,23 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (getProvider<ConfigurationProvider>(context, listen: true).loadingIngredients) const LinearProgressIndicator(),
+            // const Gap.verticalNewSection(),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.from(getProvider<ConfigurationProvider>(context, listen: true).desires.entries.map((desire) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: ThemeCustom.spaceHorizontal/2),
+                    child: FilterChip(
+                        selected: desire.value,
+                        label: Text(desire.key),
+                        onSelected: (bool value) {
+                          ConfigurationProvider.instance.updateDesireStatus(desire.key, value);
+                        }),
+                  );
+                })),
+              ),
+            ),
             const Gap.verticalNewSection(),
             Row(
               children: [
@@ -92,14 +109,16 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
               runSpacing: ThemeCustom.spaceVertical,
               children: List.from(
                 getProvider<ConfigurationProvider>(context, listen: true).ingredients.entries.map(
-                      (ingredient) => FilterChip(
-                        selected: ingredient.value,
-                        label: Text(ingredient.key),
-                        onSelected: (bool value) {
-                          ConfigurationProvider.instance.updateIngredientStatus(ingredient.key, value);
-                        },
-                      ),
-                    ),
+                  (ingredient) {
+                    return FilterChip(
+                      selected: ingredient.value,
+                      label: Text(ingredient.key),
+                      onSelected: (bool value) {
+                        ConfigurationProvider.instance.updateIngredientStatus(ingredient.key, value);
+                      },
+                    );
+                  },
+                ),
               ),
             ),
             getProvider<RecipesProvider>(context, listen: true).recipes.isEmpty ? const Gap.vertical() : const Gap.verticalNewSection(),

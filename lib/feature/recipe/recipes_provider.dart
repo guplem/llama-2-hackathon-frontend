@@ -16,12 +16,12 @@ class RecipesProvider extends ChangeNotifier {
 
   /// Recommended to use this when notifications about updates are not required instead of using getProvider<LoggedUserProvider>(context, listen: false). Reason: avoid over use of context
   static late final RecipesProvider instance; // Singleton pattern
-
+  
+  List<Recipe> get recipes => List.from(_recipes);
   late final List<Recipe> _recipes;
 
   bool loadingRecipe = false;
-
-  List<Recipe> get recipes => _recipes;
+  
 
   static void getNew() async {
     Debug.logWarning(ConfigurationProvider.instance.activeIngredients.isEmpty, "A recipe cannot be generated without ingredients.");
