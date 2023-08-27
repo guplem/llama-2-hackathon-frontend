@@ -28,7 +28,8 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldCustom(
-      pageTitle: "Configuration",
+      pageTitle: "Kitchen configurator",
+      padding: false,
       showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).activeIngredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -39,7 +40,7 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
       ),
       showFloatingActionButtonIfNoScrollableContent: true,
       appBar: AppBar(
-        title: const Text("Configuration"),
+        title: const Text("Kitchen configurator"),
         actions: [
           IconButton(
             icon: const Icon(Icons.library_books_outlined),
