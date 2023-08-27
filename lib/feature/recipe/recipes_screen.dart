@@ -76,9 +76,13 @@ class _RecipesScreenState extends State<RecipesScreen> {
                       const Divider(),
                       Text("Ingredients:", style: ThemeCustom.textTheme(context).titleMedium!.copyWith(fontWeight: FontWeight.bold)),
                       const Gap.vertical(),
-                      ...recipe.ingredients.map((ingredient) => Padding(
+                      // ...recipe.ingredients.map((ingredient) => Padding(
+                      //   padding: ThemeCustom.paddingHorizontal,
+                      //   child: Text("- ${ingredient.capitalizeFirstLetter() ?? ""}"),
+                      // )),
+                      ...recipe.ingredients.entries.map((MapEntry<String, String> ingredient) => Padding(
                         padding: ThemeCustom.paddingHorizontal,
-                        child: Text("- ${ingredient.capitalizeFirstLetter() ?? ""}"),
+                        child: Text("- ${ingredient.key.capitalizeFirstLetter() ?? ""} (${ingredient.value})"),
                       )),
                       const Gap.verticalNewSection(),
                       const Divider(),

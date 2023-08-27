@@ -236,7 +236,10 @@ class _HubScreenState extends State<HubScreen> {
                   const Gap.verticalNewSection(),
                   const Divider(),
                   const Gap.vertical(),
-                  ElevatedButton.icon(onPressed: () => RecipesProvider.getNew(), label: const Text("Get new recipe"), icon: const Icon(Icons.auto_awesome)),
+                  ElevatedButton.icon(onPressed: getProvider<RecipesProvider>(context, listen: true).loadingRecipe ? null : () {
+                    RecipesProvider.getNew();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RecipesScreen()));
+                  }, label: const Text("Get new recipe"), icon: const Icon(Icons.auto_awesome)),
                   const Gap.verticalNewSection(),
                 ],
               ),
