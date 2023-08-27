@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
-import "package:receptes_rostisseries_delgado/feature/configurator/configurator_screen.dart";
+import "package:receptes_rostisseries_delgado/feature/hub/hub_screen.dart";
 import "package:receptes_rostisseries_delgado/feature/recipe/recipes_provider.dart";
 import "package:receptes_rostisseries_delgado/flutter_essentials/library.dart";
 import "package:receptes_rostisseries_delgado/theme_custom.dart";
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         onGenerateTitle: (context) => "Receptes Rostisseries Delgado",
         // INITIAL ROUTE
-        home: const ConfiguratorScreen(),
+        home: const HubScreen(),
       ),
     );
   }
