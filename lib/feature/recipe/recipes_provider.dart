@@ -81,13 +81,24 @@ class RecipesProvider extends ChangeNotifier {
   static Future<String> _getText() async {
     Debug.logSuccessUpload("Requesting text recipe...");
 
+
+    String inputText =
+        "Available ingredients:\n"
+        "${ConfigurationProvider.instance.activeIngredients.join(", ")}\n"
+        "Maximum duration:\n"
+        "${ConfigurationProvider.instance.duration.inMinutes} minutes\n"
+        "Food for: ${ConfigurationProvider.instance.people} people\n"
+        "Difficulty: ${ConfigurationProvider.instance.difficultyAsText}\n"
+        "Preferences: ${ConfigurationProvider.instance.activeDesires.join(", ")}\n"
+        "Available appliances: ${ConfigurationProvider.instance.activeDesires.join(", ")}\n";
+
     Response response = await clarifai.post(
       "recipe-generator-large-13B/results",
       data: {
         "inputs": [
           {
             "data": {
-              "text": {"raw": ConfigurationProvider.instance.activeIngredients.join(", ")}
+              "text": {"raw": inputText}
             }
           }
         ]
