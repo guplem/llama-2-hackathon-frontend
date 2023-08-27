@@ -12,7 +12,7 @@ class RecipePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedCard(
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RecipesScreen(initialRecipeId: recipe.id,))),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RecipesScreen(initialRecipeId: recipe.id, startInLoadingScreen: false))),
       padding: EdgeInsets.zero,
       child: ClipRRect(
         borderRadius: ThemeCustom.borderRadiusStandard,

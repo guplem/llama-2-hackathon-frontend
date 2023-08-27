@@ -34,7 +34,12 @@ class _MyAppState extends State<MyApp> {
       providers: [
         // Provider(create: (context) => SomeOtherClass()),
         ChangeNotifierProvider(create: (context) => InternetConnectivityProvider()),
-        ChangeNotifierProvider(create: (context) => ConfigurationProvider(ingredients: ["Oil", "Salt", "Pepper", "Onion", "Garlic"])),
+        ChangeNotifierProvider(
+          create: (context) => ConfigurationProvider(
+            activeIngredients: ["Oil", "Salt", "Pepper", "Onion", "Garlic"],
+            inactiveIngredients: ["Flour", "Eggs", "Milk", "Butter", "Sugar", "Pasta", "Rice", "Tomato", "Potato", "Carrot", "Chicken", "Beef", "Pork", "Fish", "Seafood", "Lamb", "Vegetables", "Fruits", "Spices", "Herbs", "Nuts", "Bread"],
+          ),
+        ),
         ChangeNotifierProvider(
           create: (context) => RecipesProvider(
             recipes: [

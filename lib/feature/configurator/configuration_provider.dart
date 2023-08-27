@@ -11,9 +11,11 @@ import "package:receptes_rostisseries_delgado/api.dart";
 // https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple
 // getProvider<X> vs. Consumer<X> https://stackoverflow.com/a/58774889/7927429
 class ConfigurationProvider extends ChangeNotifier {
-  ConfigurationProvider({List<String>? ingredients}) {
+  ConfigurationProvider({List<String>? activeIngredients, List<String>? inactiveIngredients}) {
     instance = this;
-    _ingredients = Map.fromEntries(ingredients?.map((ingredient) => MapEntry(ingredient, true)) ?? {});
+    Map<String, bool> active = Map.fromEntries(activeIngredients?.map((ingredient) => MapEntry(ingredient, true)) ?? {});
+    Map<String, bool> inactive = Map.fromEntries(inactiveIngredients?.map((ingredient) => MapEntry(ingredient, false)) ?? {});
+    _ingredients = {...active, ...inactive};
   }
 
   static late final ConfigurationProvider instance;

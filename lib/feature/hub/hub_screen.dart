@@ -210,25 +210,29 @@ class _HubScreenState extends State<HubScreen> {
                   ),
                   const Gap.vertical(),
                   Center(
-                    child: Wrap(
-                      spacing: ThemeCustom.spaceHorizontal / 2,
-                      runSpacing: ThemeCustom.spaceVertical / 2,
-                      children: List.from(
-                        getProvider<ConfigurationProvider>(context, listen: true).ingredients.entries.map(
-                          (ingredient) {
-                            return GestureDetector(
-                              onLongPress: () {
-                                ConfigurationProvider.instance.removeIngredient(ingredient.key);
-                              },
-                              child: FilterChip(
-                                selected: ingredient.value,
-                                label: Text(ingredient.key),
-                                onSelected: (bool value) {
-                                  ConfigurationProvider.instance.updateIngredientStatus(ingredient.key, value);
+                    child: Padding(
+                      padding: ThemeCustom.paddingHorizontal,
+                      child: Wrap(
+                        spacing: ThemeCustom.spaceHorizontal / 2,
+                        runSpacing: ThemeCustom.spaceVertical / 2,
+                        alignment: WrapAlignment.center,
+                        children: List.from(
+                          getProvider<ConfigurationProvider>(context, listen: true).ingredients.entries.map(
+                            (ingredient) {
+                              return GestureDetector(
+                                onLongPress: () {
+                                  ConfigurationProvider.instance.removeIngredient(ingredient.key);
                                 },
-                              ),
-                            );
-                          },
+                                child: FilterChip(
+                                  selected: ingredient.value,
+                                  label: Text(ingredient.key),
+                                  onSelected: (bool value) {
+                                    ConfigurationProvider.instance.updateIngredientStatus(ingredient.key, value);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

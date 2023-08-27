@@ -7,9 +7,10 @@ import "package:receptes_rostisseries_delgado/theme_custom.dart";
 import "package:scroll_snap_list/scroll_snap_list.dart";
 
 class RecipesScreen extends StatefulWidget {
-  const RecipesScreen({super.key, this.initialRecipeId});
+  const RecipesScreen({super.key, this.initialRecipeId, this.startInLoadingScreen = true});
 
   final String? initialRecipeId;
+  final bool startInLoadingScreen;
 
   @override
   State<RecipesScreen> createState() => _RecipesScreenState();
@@ -40,7 +41,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
       // Package: https://pub.dev/packages/scroll_snap_list
       body: ScrollSnapList(
         // initialIndex: widget.initialRecipeId == null ? null : RecipesProvider.instance.recipes.indexWhere((element) => element.id == widget.initialRecipeId) * recipeWidth,
-        initialIndex: widget.initialRecipeId == null ? null : RecipesProvider.instance.recipes.indexWhere((element) => element.id == widget.initialRecipeId) * 1,
+        initialIndex: widget.startInLoadingScreen ? getProvider<RecipesProvider>(context, listen: true).recipes.length.toDouble() : widget.initialRecipeId == null ? null : RecipesProvider.instance.recipes.indexWhere((element) => element.id == widget.initialRecipeId).toDouble(),
         scrollDirection: Axis.horizontal,
         itemSize: recipeWidth,
         onItemFocus: (int index) => setState(() => _focusedIndex = index),
