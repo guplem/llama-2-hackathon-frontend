@@ -11,9 +11,8 @@ import "package:receptes_rostisseries_delgado/api.dart";
 // https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple
 // getProvider<X> vs. Consumer<X> https://stackoverflow.com/a/58774889/7927429
 class ConfigurationProvider extends ChangeNotifier {
-
   ConfigurationProvider({List<String>? ingredients}) {
-    _ingredients = ingredients ?? [];
+    _activeIngredients = ingredients ?? [];
     instance = this; // Singleton pattern
   }
 
@@ -22,18 +21,36 @@ class ConfigurationProvider extends ChangeNotifier {
   /// Recommended to use this when notifications about updates are not required instead of using getProvider<LoggedUserProvider>(context, listen: false). Reason: avoid over use of context
   static late final ConfigurationProvider instance; // Singleton pattern
 
-  late final List<String> _ingredients;
+  List<String> get activeIngredients => _activeIngredients;
+  late final List<String> _activeIngredients;
 
-  List<String> get ingredients => _ingredients;
+  List<String> get deactivatedIngredients => _deactivatedIngredients;
+  late final List<String> _deactivatedIngredients;
 
   void addIngredient(String ingredient) {
     if (ingredient.isNullOrEmpty) return;
-    _ingredients.add(ingredient);
+    _activeIngredients.add(ingredient);
     notifyListeners();
   }
 
   void removeIngredient(String ingredient) {
-    _ingredients.remove(ingredient);
+    if (ingredient.isNullOrEmpty) return;
+    _activeIngredients.remove(ingredient);
+    _deactivatedIngredients.remove(ingredient);
+    notifyListeners();
+  }
+
+  void deactivateIngredient(String ingredient) {
+    if (ingredient.isNullOrEmpty) return;
+    _activeIngredients.remove(ingredient);
+    _deactivatedIngredients.add(ingredient);
+    notifyListeners();
+  }
+
+  void activateIngredient(String ingredient) {
+    if (ingredient.isNullOrEmpty) return;
+    _activeIngredients.add(ingredient);
+    _deactivatedIngredients.remove(ingredient);
     notifyListeners();
   }
 
@@ -68,8 +85,7 @@ class ConfigurationProvider extends ChangeNotifier {
     Debug.logSuccessDownload("Ingredients in text format:\n$ingredients");
 
     loadingIngredients = false;
-    _ingredients.addAll(ingredients);
+    _deactivatedIngredients.addAll(ingredients);
     notifyListeners();
   }
-
 }

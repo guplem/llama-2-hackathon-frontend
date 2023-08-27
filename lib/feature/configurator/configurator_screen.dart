@@ -28,7 +28,7 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
   Widget build(BuildContext context) {
     return ScaffoldCustom(
       pageTitle: "Configuration",
-      showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).ingredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
+      showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).activeIngredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           RecipesProvider.getNew();
@@ -87,7 +87,7 @@ class _ConfiguratorScreenState extends State<ConfiguratorScreen> {
             ),
             const Gap.vertical(),
             ...List.from(
-              getProvider<ConfigurationProvider>(context, listen: true).ingredients.map(
+              getProvider<ConfigurationProvider>(context, listen: true).activeIngredients.map(
                     (String ingredient) => ListTile(
                       trailing: IconButton(
                         icon: const Icon(Icons.delete_rounded),

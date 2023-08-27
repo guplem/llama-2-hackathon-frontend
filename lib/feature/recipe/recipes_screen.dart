@@ -23,7 +23,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
   Widget build(BuildContext context) {
     return ScaffoldCustom(
       pageTitle: "Recipes",
-      showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).ingredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
+      showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).activeIngredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           RecipesProvider.getNew();

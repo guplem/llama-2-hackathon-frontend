@@ -24,7 +24,7 @@ class RecipesProvider extends ChangeNotifier {
   List<Recipe> get recipes => _recipes;
 
   static void getNew() async {
-    Debug.logWarning(ConfigurationProvider.instance.ingredients.isEmpty, "A recipe cannot be generated without ingredients.");
+    Debug.logWarning(ConfigurationProvider.instance.activeIngredients.isEmpty, "A recipe cannot be generated without ingredients.");
     Debug.logWarning(RecipesProvider.instance.loadingRecipe, "A recipe is already being generated.");
 
     Debug.log("Requesting new recipe...");
@@ -87,7 +87,7 @@ class RecipesProvider extends ChangeNotifier {
         "inputs": [
           {
             "data": {
-              "text": {"raw": ConfigurationProvider.instance.ingredients.join(", ")}
+              "text": {"raw": ConfigurationProvider.instance.activeIngredients.join(", ")}
             }
           }
         ]
