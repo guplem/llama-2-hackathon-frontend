@@ -7,7 +7,9 @@ import "package:receptes_rostisseries_delgado/theme_custom.dart";
 import "package:scroll_snap_list/scroll_snap_list.dart";
 
 class RecipesScreen extends StatefulWidget {
-  const RecipesScreen({super.key});
+  const RecipesScreen({super.key, this.initialRecipeId}) ;
+
+  final String? initialRecipeId;
 
   @override
   State<RecipesScreen> createState() => _RecipesScreenState();
@@ -37,6 +39,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
       padding: false,
       // Package: https://pub.dev/packages/scroll_snap_list
       body: ScrollSnapList(
+        // initialIndex: widget.initialRecipeId == null ? null : RecipesProvider.instance.recipes.indexWhere((element) => element.id == widget.initialRecipeId) * recipeWidth,
+        initialIndex: widget.initialRecipeId == null ? null : RecipesProvider.instance.recipes.indexWhere((element) => element.id == widget.initialRecipeId) * 1,
         scrollDirection: Axis.horizontal,
         itemSize: recipeWidth,
         onItemFocus: (int index) => setState(() => _focusedIndex = index),
@@ -62,8 +66,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap.verticalNewSection(),
-                    if (recipe.image != null) Image.memory(recipe.image!),
-                    if (recipe.image == null) ShimmerEffect(enabled: true, child: Container(color: Colors.black, height: 200, width: double.infinity)),
+                    if (recipe.image != null) Hero(tag: recipe.id, child: Image.memory(recipe.image!)),
+                    if (recipe.image == null) Hero(tag: recipe.id, child: ShimmerEffect(enabled: true, child: Container(color: Colors.black, height: 200, width: double.infinity))),
                     const Gap.vertical(),
                     Text(recipe.title, style: ThemeCustom.textTheme(context).titleLarge),
                     const Gap.verticalNewSection(),

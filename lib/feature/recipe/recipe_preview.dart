@@ -12,7 +12,7 @@ class RecipePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedCard(
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RecipesScreen())),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RecipesScreen(initialRecipeId: recipe.id,))),
       padding: EdgeInsets.zero,
       child: ClipRRect(
         borderRadius: ThemeCustom.borderRadiusStandard,
@@ -24,7 +24,7 @@ class RecipePreview extends StatelessWidget {
               borderRadius: ThemeCustom.borderRadiusStandard,
               child: Builder(builder: (context) {
                 if (recipe.image != null) {
-                  return Image.memory(recipe.image!, fit: BoxFit.cover);
+                  return Hero(tag: recipe.id, child: Image.memory(recipe.image!, fit: BoxFit.cover));
                 } else {
                   return ShimmerEffect(enabled: true, child: Container(color: Colors.black, height: 200, width: double.infinity));
                 }
