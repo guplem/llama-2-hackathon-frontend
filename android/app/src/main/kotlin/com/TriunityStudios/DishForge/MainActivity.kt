@@ -1,4 +1,4 @@
-package com.rostisseriesdelgado.receptes.receptes_rostisseries_delgado
+package com.TriunityStudios.DishForge
 
 import io.flutter.embedding.android.FlutterActivity
 
