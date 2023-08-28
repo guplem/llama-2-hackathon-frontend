@@ -33,7 +33,7 @@ class _HubScreenState extends State<HubScreen> {
       initialIndex: 0,
       length: 2,
       child: ScaffoldCustom(
-        pageTitle: "Kitchen configurator",
+        pageTitle: "DishForge",
         padding: false,
         showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).activeIngredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
         floatingActionButton: FloatingActionButton(

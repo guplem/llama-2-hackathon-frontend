@@ -25,7 +25,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldCustom(
-      pageTitle: "Recipes",
+      pageTitle: "DishForge - Recipes",
       showFloatingActionButton: getProvider<ConfigurationProvider>(context, listen: true).activeIngredients.isNotEmpty && !getProvider<RecipesProvider>(context, listen: true).loadingRecipe,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
